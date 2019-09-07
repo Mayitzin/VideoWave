@@ -4,7 +4,11 @@ Audio Class
 
 import os
 import subprocess
+import numpy as np
+import cv2
+from scipy import signal
 from scipy.io import wavfile
+import matplotlib.pyplot as plt
 
 FFMPEG_SUPPORTED_VIDEO_FORMATS = [
 "3dostr", "3g2", "3gp", "4xm", "a64", "aa", "aac", "ac3", "acm", "act", "adf",
@@ -80,4 +84,47 @@ class Audio:
         if os.path.splitext(self.input_file)[1][1:] in FFMPEG_SUPPORTED_VIDEO_FORMATS:
             return True
         return False
+
+    def spectral_waves(self, shape, threshold, nps=None):
+        _, _, spg = signal.spectrogram(self.data[:, 0], self.samplerate, nperseg=nps)
+        spg /= spg.max()    # Normalize spectrogram
+        # Remove empty spaces
+        _, th_bin = cv2.threshold(spg, threshold, 1.0, cv2.THRESH_BINARY)
+        nzrs = np.nonzero(th_bin.sum(axis=1))
+        _, th_trc = cv2.threshold(spg[np.min(nzrs):np.max(nzrs), :], threshold, 1.0, cv2.THRESH_TRUNC)
+        # Reshape spectrogram
+        resized = cv2.resize(th_trc, shape, interpolation=cv2.INTER_AREA)
+        resized /= resized.max()
+        return resized
+
+    def show_data(self, span=None):
+        """
+        Show audio channels
+
+        Parameters
+        ----------
+        span : list
+            Start and end, in seconds, of audio to show.
+
+        Examples
+        --------
+        >>> audio = Audio('some_file.mp4')
+        >>> audio.show_data([1.5, 3.5])
+
+        """
+        num_samples, num_channels = self.data.shape
+        is_stereo = num_channels == 2
+        start, end = 0, num_samples
+        if span != None:
+            # start, end = span
+            start = int(span[0]*self.samplerate)
+            end = int(span[1]*self.samplerate)
+        fig = plt.figure("Audio")
+        if is_stereo:
+            for i in range(2):
+                ax = plt.subplot(2, 1, i+1)
+                ax.plot(self.data[start:end, i], lw=0.5)
+        else:
+            plt.plot(self.data[start:end])
+        plt.show()
 
