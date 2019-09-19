@@ -4,6 +4,7 @@ Video Capture Class
 
 import cv2
 import os
+import sys
 import subprocess
 import numpy as np
 from scipy.io import wavfile
@@ -87,13 +88,25 @@ class Video:
             return None
 
     def save_frame(self, idx, name):
+        """
+        Save a single frame with the given name.
+        """
         cv2.imwrite(name, self.frames[idx])
 
     def save_frames(self, path_to_frames, frames=None):
+        """
+        Save each frame of the video in the given folder
+        """
         if frames is None:
             frames = self.frames
+        num_frames = len(frames)
+        if num_frames < 1:
+            sys.exit("There are no frames to save.")
+        if not os.path.exists(path_to_frames):
+            os.mkdir(path_to_frames)
+        num_digits = len(str(num_frames))
         for i, f in enumerate(frames):
-            cv2.imwrite("{}/{:03d}.png".format(path_to_frames, i), f)
+            cv2.imwrite("{}/{:0{n}d}.png".format(path_to_frames, i, n=num_digits), f)
 
     def create_frames(self, frames, waves):
         height, width, ch = frames[0].shape
