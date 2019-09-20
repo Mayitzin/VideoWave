@@ -1,0 +1,8 @@
+# Auto-generated
+__pychache__/
+*.egg-info/
+
+# Compiled files
+*.exe
+*.o
+*.pyc
