@@ -115,7 +115,6 @@ class Video:
         h_mid = width//2
         area = (10, width-10, v_mid+50, v_mid-50) # left, right, down, up
         x_line = np.linspace(area[0], area[1], num_bits, dtype='int')
-        win_name = "Video"
         self.frames = []
         for i, frame in enumerate(frames):
             for bit in range(num_bits):

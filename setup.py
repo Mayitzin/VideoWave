@@ -16,7 +16,7 @@ if sys.version_info < (3, 5):
 # Versioning
 MAJOR       = 0
 MINOR       = 1
-MICRO       = 0
+MICRO       = 1
 PRE_RELEASE = ''
 VERSION = '{}.{}.{}-{}'.format(MAJOR, MINOR, MICRO, PRE_RELEASE)
 
