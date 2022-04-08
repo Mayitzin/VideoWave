@@ -2,7 +2,7 @@
 
 This small application creates a sound wave and superimposes it on each frame of a video.
 
-Check the reasoning behind the curtain in its [original post](https://mariogc.com/post/videowave/).
+Check a small description of its inner workings in its [original post](https://mariogc.com/post/videowave/).
 
 ## Requirements
 
