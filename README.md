@@ -2,6 +2,8 @@
 
 This small application creates a sound wave and superimposes it on each frame of a video.
 
+Check the reasoning behind the curtain in its [original post](https://mariogc.com/post/videowave/).
+
 ## Requirements
 
 - [ffmpeg](https://ffmpeg.org/) to handle video encoding/decoding
