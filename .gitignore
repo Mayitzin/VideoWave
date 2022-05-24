@@ -6,3 +6,8 @@ __pychache__/
 *.exe
 *.o
 *.pyc
+
+# Media Files
+*.mp4
+*.mov
+*.avi
